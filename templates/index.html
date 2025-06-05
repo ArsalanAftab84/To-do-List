@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Todo List</h1>
+            <form action="{{ url_for('add') }}" method="POST" class="add-todo-form">
+                <input type="text" name="title" placeholder="Add a new task..." required>
+                <button type="submit">
+                    <i class="fas fa-plus"></i>
+                </button>
+            </form>
+        </header>
+        
+        <main class="todo-list">
+            {% for todo in todos %}
+            <div class="todo-item {% if todo.completed %}completed{% endif %}">
+                <div class="todo-content">
+                    <span class="todo-title">{{ todo.title }}</span>
+                    <span class="todo-date">{{ todo.created_at.strftime('%Y-%m-%d %H:%M') }}</span>
+                </div>
+                <div class="todo-actions">
+                    <a href="{{ url_for('complete', id=todo.id) }}" class="action-btn complete-btn">
+                        <i class="fas {% if todo.completed %}fa-undo{% else %}fa-check{% endif %}"></i>
+                    </a>
+                    <a href="{{ url_for('delete', id=todo.id) }}" class="action-btn delete-btn">
+                        <i class="fas fa-trash"></i>
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+            
+            {% if not todos %}
+            <div class="empty-state">
+                <i class="fas fa-clipboard-list"></i>
+                <p>No tasks yet! Add your first task above.</p>
+            </div>
+            {% endif %}
+        </main>
+    </div>
+</body>
+</html> 
