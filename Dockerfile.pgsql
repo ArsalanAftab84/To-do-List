@@ -1,13 +1,10 @@
-FROM postgres:13-slim
+FROM postgres:13-alpine
 
 # Create custom directory
 RUN mkdir -p /etc/postgresql
 
 # Copy custom PostgreSQL configuration
 COPY postgresql.conf /etc/postgresql/postgresql.conf
-
-# Copy initialization scripts
-COPY init.sql /docker-entrypoint-initdb.d/
 
 # Add health check with proper timeout
 HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
